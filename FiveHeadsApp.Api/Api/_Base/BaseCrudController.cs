@@ -101,11 +101,13 @@ public abstract class BaseCrudController<T, TAdd, TResponse> : ControllerBase
     /// </summary>
     /// <param name="model">Запись</param>
     /// <response code="400">Запись не прошла валидацию</response>
+    /// <response code="409">Запись уже существует</response>
     /// <response code="500">При добавлении записи произошла ошибка на сервере</response>   
     /// <returns>Добавленная запись</returns>
     [HttpPost]
     [SwaggerResponse(200, "Запись успешно добавлена. Содержит информацию о добавленной записи", typeof(BaseEntity))]
     [SwaggerResponse(400, "Ошибка валидации")]
+    [SwaggerResponse(409, "Запись уже существует")]
     [SwaggerResponse(500, "Ошибка при добавлении записи")]
     public virtual ActionResult<TResponse> Add(TAdd model)
     {
@@ -125,10 +127,12 @@ public abstract class BaseCrudController<T, TAdd, TResponse> : ControllerBase
     /// </summary>
     /// <param name="models">Записи</param>
     /// <response code="400">Записи не прошли валидацию</response>
+    /// <response code="409">Запись уже существует</response>
     /// <response code="500">При добавлении записи произошла ошибка на сервере</response>   
     /// <returns>Добавленная запись</returns>
     [HttpPost("range")]
     [SwaggerResponse(200, "Записи успешно добавлены. Содержит список добавленных записей", typeof(List<BaseEntity>))]
+    [SwaggerResponse(409, "Запись уже существует")]
     [SwaggerResponse(500, "Произошла ошибка при добавлении записей")]
     public virtual ActionResult<List<TResponse>> AddRange(List<TAdd> models)
     {
