@@ -5,18 +5,13 @@ namespace FiveHeadsApp.Core.Dto;
 /// <summary>
 /// Данные для входа пользователя
 /// </summary>
-public class LoginDto
-{
-    /// <summary>
-    /// Почта
-    /// </summary>
+/// <param name="Email">Почта</param>
+/// <param name="Password">Пароль</param>
+public record LoginDto
+(
     [Required]
     [EmailAddress(ErrorMessage = "Invalid email address")]
-    public string Email { get; set; }
-
-    /// <summary>
-    /// Пароль
-    /// </summary>
-    [Required]
-    public string Password { get; set; }
-}
+    string Email,
+    
+    [Required] string Password
+);

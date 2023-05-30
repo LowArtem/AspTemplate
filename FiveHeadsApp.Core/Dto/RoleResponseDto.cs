@@ -3,20 +3,7 @@
 /// <summary>
 /// Информация о роли пользователя
 /// </summary>
-public class RoleResponseDto
-{
-    /// <summary>
-    /// Id
-    /// </summary>
-    public int Id { get; set; }
-    
-    /// <summary>
-    /// Название
-    /// </summary>
-    public string Name { get; set; }
-    
-    /// <summary>
-    /// Описание
-    /// </summary>
-    public string Description { get; set; }
-}
+/// <param name="Id">Id</param>
+/// <param name="Name">Название</param>
+/// <param name="Description">Описание</param>
+public record RoleResponseDto(int Id, string Name, string Description);

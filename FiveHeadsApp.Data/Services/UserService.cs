@@ -70,12 +70,11 @@ public class UserService
             throw new ApplicationException("Error while creating a user");
         }
 
-        return new AuthResponseDto
-        {
-            Email = user.Email,
-            AccessToken = token,
-            Roles = _mapper.Map<List<RoleResponseDto>>(defaultRole)
-        };
+        return new AuthResponseDto(
+            Email: user.Email,
+            AccessToken: token,
+            Roles: _mapper.Map<List<RoleResponseDto>>(new List<Role> { defaultRole! })
+        );
     }
 
     /// <summary>
@@ -101,12 +100,11 @@ public class UserService
             throw new AuthenticationException("Wrong password");
         }
 
-        return new AuthResponseDto
-        {
-            Email = user.Email,
-            AccessToken = GetToken(loginDto.Email, loginDto.Password)!,
-            Roles = user.UserRoles.Select(r => _mapper.Map<RoleResponseDto>(r)).ToList()
-        };
+        return new AuthResponseDto(
+            Email: user.Email,
+            AccessToken: GetToken(loginDto.Email, loginDto.Password)!,
+            Roles: user.UserRoles.Select(r => _mapper.Map<RoleResponseDto>(r)).ToList()
+        );
     }
 
     /// <summary>
@@ -122,12 +120,12 @@ public class UserService
         {
             throw new ArgumentException("You have to provide role ids", nameof(roleIds));
         }
-        
+
         var roles = _roleRepository.GetListQuery()
             .AsTracking()
             .Where(x => roleIds.Contains(x.Id))
             .ToList();
-        
+
         if (roles.Count() != roleIds.Count)
         {
             throw new EntityNotFoundException(typeof(Role), roleIds);
@@ -149,8 +147,10 @@ public class UserService
             {
                 r.Users = new List<User>();
             }
+
             r.Users.Add(user);
         }
+
         _roleRepository.SaveChanges();
     }
 

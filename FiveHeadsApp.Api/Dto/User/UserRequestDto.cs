@@ -5,35 +5,19 @@ namespace FiveHeadsApp.Api.Dto.User;
 /// <summary>
 /// Данные для создания пользователя
 /// </summary>
-public class UserRequestDto
-{
-    /// <summary>
-    /// Электронная почта
-    /// </summary>
-    [Required]
-    [EmailAddress]
-    public string Email { get; set; }
-
-    /// <summary>
-    /// Пароль
-    /// </summary>
-    [Required]
-    public string Password { get; set; }
-
-    /// <summary>
-    /// Имя
-    /// </summary>
-    [Required]
-    public string FirstName { get; set; }
-
-    /// <summary>
-    /// Фамилия
-    /// </summary>
-    [Required]
-    public string LastName { get; set; }
-
-    /// <summary>
-    /// Отчество (при наличии)
-    /// </summary>
-    public virtual string? MiddleName { get; set; }
-}
+/// <param name="Email">Электронная почта</param>
+/// <param name="Password">Пароль</param>
+/// <param name="FirstName">Имя</param>
+/// <param name="LastName">Фамилия</param>
+/// <param name="MiddleName">Отчество (при наличии)</param>
+public record UserRequestDto
+(
+    [Required] 
+    [EmailAddress(ErrorMessage = "Invalid email address")]
+    string Email,
+    
+    [Required] string Password,
+    [Required] string FirstName,
+    [Required] string LastName, 
+    string? MiddleName
+);
