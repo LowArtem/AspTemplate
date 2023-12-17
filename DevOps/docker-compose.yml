@@ -34,7 +34,7 @@ services:
       - '-c'
       - 'pg_stat_statements.track=all'
     environment:
-      POSTGRES_DB: five_heads_db
+      POSTGRES_DB: application_db
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: root
       PGDATA: '/var/lib/postgresql/data/pgdata'
@@ -44,7 +44,7 @@ services:
     ports:
       - '5432:5432'
     healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U postgres -d five_heads_db']
+      test: ['CMD-SHELL', 'pg_isready -U postgres -d application_db']
       interval: 10s
       timeout: 5s
       retries: 5
@@ -59,8 +59,8 @@ services:
     container_name: application_backend
     image: application_backend
     build:
-      dockerfile: ../FiveHeadsApp.Api/Dockerfile
-    command: dotnet FiveHeadsApp.Api.dll
+      dockerfile: ../AspAdvancedApp.Api/Dockerfile
+    command: dotnet AspAdvancedApp.Api.dll
     environment:
       ASPNETCORE_ENVIRONMENT: 'Development'
       ASPNETCORE_URLS: 'http://*:5000;'

@@ -366,5 +366,5 @@ FodyWeavers.xsd
 .idea/.idea.EventlyServer/.idea/sonarlint/*
 
 # Custom files
-/FiveHeadsApp/pgdata/*
-/FiveHeadsApp/.idea/.idea.FiveHeadsApp/.idea/workspace.xml
+/AspAdvancedApp/pgdata/*
+/AspAdvancedApp/.idea/.idea.AspAdvancedApp/.idea/workspace.xml
