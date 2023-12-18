@@ -1,0 +1,69 @@
+---
+- name: "Playbook: [Обновление и развертывание приложения]"
+  hosts: "{{ HOSTS | default('localhost') }}"
+  become: yes
+
+  vars:
+    GITUSER:                    # - Username для клонирования приватного репозитория
+    GITPASS:                    # - Пароль для клонирования приватного репозитория
+    REPO:                       # - Ссылка на репозиторий
+    BRANCH: master              # - Ветка для клонирования
+    DEV_OPS_DIR: "/DevOps"      # - Путь до папки с DevOps
+
+  tasks:
+    - name: "Создание временной папки"
+      tempfile:
+        state: directory
+        suffix: _git_clone
+      register: directory
+
+    - set_fact: directory="{{ directory.path }}"
+
+    - debug:
+        msg: "Проект будет склонирован в директорию: {{ directory }}"
+
+    - name: "Клонирование публичного репозитория"
+      git:
+        repo: https://{{ REPO }}
+        dest: "{{ directory }}/"
+        version: "{{ BRANCH }}"
+      when: GITUSER is not defined and GITPASS is not defined
+
+    - name: Клонирование приватного репозитория
+      git:
+        repo: https://{{ GITUSER | urlencode }}:{{ GITPASS | urlencode }}@{{ REPO }}
+        dest: "{{ directory }}/"
+        version: "{{ BRANCH }}"
+      when: GITUSER is defined and GITPASS is defined
+
+    - name: Сборка основного приложения
+      command: sudo docker-compose -f docker-compose.yml build
+      args:
+        chdir: "{{ directory }}{{ DEV_OPS_DIR | default('', true) }}"
+      register: result_build_main
+      ignore_errors: True
+
+    - name: Удаление старых docker контейнеров
+      command: sudo docker compose -f docker-compose.yml rm -f
+      args:
+        chdir: "{{ directory }}{{ DEV_OPS_DIR | default('', true) }}"
+      ignore_errors: True
+      when: ENV_FILE is not defined or ENV_FILE == ""
+
+    - name: Запуск основного приложения
+      command: sudo docker-compose -f docker-compose.yml up -d
+      args:
+        chdir: "{{ directory }}{{ DEV_OPS_DIR | default('', true) }}"
+      register: result_up_main
+      ignore_errors: True
+      when: result_build_main.rc == 0
+
+    - name: Удаление временной директории
+      file:
+        path: "{{ directory }}"
+        state: absent
+
+    - name: Проверка на успешность развертывания
+      debug:
+        msg: "Проект успешно развернут"
+      failed_when: result_up_main.rc != 0

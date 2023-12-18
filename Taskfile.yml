@@ -1,0 +1,12 @@
+version: 3
+
+tasks:
+  first_deploy:
+    dir: DevOps/playbooks
+    cmds:
+      - wsl -d Ubuntu-20.04 bash -c 'cd $PWD && ansible-playbook first_deploy.yml -e REPO="{{ REPO }}" -e BRANCH="{{ BRANCH }}"'
+
+  deploy:
+    dir: DevOps/playbooks
+    cmds:
+      - wsl -d Ubuntu-20.04 bash -c 'cd $PWD && ansible-playbook deploy.yml -e REPO="{{ REPO }}" -e BRANCH="{{ BRANCH }}"'
