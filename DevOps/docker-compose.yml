@@ -55,6 +55,17 @@ services:
     labels:
       org.label-schema.group: 'application'
 
+  redis:
+    image: redis/redis-stack:latest
+    container_name: redis
+    ports:
+      - 6379:6379
+      - 8002:8001
+    networks:
+      - app
+    labels:
+      org.label-schema.group: 'application'
+
   application_backend:
     container_name: application_backend
     image: application_backend
@@ -72,6 +83,7 @@ services:
       - app
     depends_on:
       - postgres
+      - redis
     labels:
       org.label-schema.group: 'application'
 

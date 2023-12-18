@@ -50,6 +50,8 @@ public static class ServiceCollectionExtensions
 
         // Other services (Email, UserManager, etc.)
         services.AddServices();
+
+        services.AddRedis(configuration);
     }
 
     /// <summary>
