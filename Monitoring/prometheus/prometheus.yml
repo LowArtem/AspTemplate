@@ -39,9 +39,9 @@ scrape_configs:
     static_configs:
       - targets: ['application_backend:5000']
 
-#  - job_name: 'nginx'
-#    scrape_interval: 10s
-#    static_configs:
-#      - targets: ['nginxexporter:9113']
+  - job_name: 'nginx'
+    scrape_interval: 60s
+    static_configs:
+      - targets: ['nginxexporter:9113']
 
 
