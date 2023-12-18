@@ -362,8 +362,8 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 
-# Sonarlint settings
-.idea/.idea.EventlyServer/.idea/sonarlint/*
+# Rider settings
+.idea
 
 # Custom files
 /AspAdvancedApp/pgdata/*
