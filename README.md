@@ -15,7 +15,7 @@ There are also configured DevOps scripts for deploying web app to the server wit
 
 ## Prerequisites
 
-- Installed docker on your server
+- Installed [docker](https://docs.docker.com/engine/install/) on your server
 - Activated [wsl](https://learn.microsoft.com/windows/wsl/install) if you are Windows user
 - Installed [ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#pip-install) on your machine (for Linux/Mac users) or in wsl (for Windows users)
 - Installed [taskfile](https://taskfile.dev) on your local machine to simplify using deployment commands
