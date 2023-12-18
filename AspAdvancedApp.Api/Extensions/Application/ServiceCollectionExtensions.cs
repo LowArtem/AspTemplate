@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using AspAdvancedApp.Api.Redis;
 using AspAdvancedApp.Api.Swagger;
 using AspAdvancedApp.Core.Configurations;
 using AspAdvancedApp.Core.Repositories;

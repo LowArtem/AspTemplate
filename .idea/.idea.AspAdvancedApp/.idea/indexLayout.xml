@@ -5,7 +5,10 @@
       <Path>DevOps</Path>
       <Path>Monitoring</Path>
     </attachedFolders>
-    <explicitIncludes />
+    <explicitIncludes>
+      <Path>.gitignore</Path>
+      <Path>Taskfile.yml</Path>
+    </explicitIncludes>
     <explicitExcludes />
   </component>
 </project>
