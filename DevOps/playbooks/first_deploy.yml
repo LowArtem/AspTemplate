@@ -36,6 +36,13 @@
         version: '{{ BRANCH }}'
       when: GITUSER is defined and GITPASS is defined
 
+    - name: Сборка сервисов для приложения (базы данных, nginx)
+      command: sudo docker-compose -f docker-compose-services.yml build
+      args:
+        chdir: "{{ directory }}{{ DEV_OPS_DIR | default('', true) }}"
+      register: result_build_services
+      ignore_errors: False
+
     - name: Сборка основного приложения
       command: sudo docker-compose -f docker-compose.yml build
       args:
@@ -56,6 +63,14 @@
         chdir: '{{ directory }}/Monitoring'
       register: result_build_monitoring
       ignore_errors: True
+
+    - name: Запуск сервисов
+      command: sudo docker-compose -f docker-compose-services.yml up -d
+      args:
+        chdir: "{{ directory }}{{ DEV_OPS_DIR | default('', true) }}"
+      register: result_up_services
+      ignore_errors: False
+      when: result_build_services.rc == 0
 
     - name: Запуск основного приложения
       command: sudo docker-compose -f docker-compose.yml up -d
@@ -89,4 +104,4 @@
     - name: Проверка на успешность развертывания
       debug:
         msg: 'Проект успешно развернут'
-      failed_when: (result_up_monitoring.rc != 0) or (result_up_main.rc != 0)
+      failed_when: (result_up_services.rc != 0) or (result_up_monitoring.rc != 0) or (result_up_main.rc != 0)

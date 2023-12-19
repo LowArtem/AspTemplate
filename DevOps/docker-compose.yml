@@ -1,71 +1,5 @@
 version: '3.9'
 services:
-  postgres:
-    container_name: postgres
-    image: postgres:15.0
-    command:
-      - 'postgres'
-      - '-c'
-      - 'max_connections=50'
-      - '-c'
-      - 'shared_buffers=1GB'
-      - '-c'
-      - 'effective_cache_size=4GB'
-      - '-c'
-      - 'work_mem=16MB'
-      - '-c'
-      - 'maintenance_work_mem=512MB'
-      - '-c'
-      - 'random_page_cost=1.1'
-      - '-c'
-      - 'temp_file_limit=10GB'
-      - '-c'
-      - 'log_min_duration_statement=200ms'
-      - '-c'
-      - 'idle_in_transaction_session_timeout=10s'
-      - '-c'
-      - 'lock_timeout=1s'
-      - '-c'
-      - 'statement_timeout=60s'
-      - '-c'
-      - 'shared_preload_libraries=pg_stat_statements'
-      - '-c'
-      - 'pg_stat_statements.max=10000'
-      - '-c'
-      - 'pg_stat_statements.track=all'
-    environment:
-      POSTGRES_DB: application_db
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: root
-      PGDATA: '/var/lib/postgresql/data/pgdata'
-    volumes:
-      - ../InitDb:/docker-entrypoint-initdb.d
-      - .:/var/lib/postgresql/data
-    ports:
-      - '5432:5432'
-    healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U postgres -d application_db']
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 10s
-    restart: unless-stopped
-    networks:
-      - app
-    labels:
-      org.label-schema.group: 'application'
-
-  redis:
-    image: redis/redis-stack:latest
-    container_name: redis
-    ports:
-      - 6379:6379
-      - 8002:8001
-    networks:
-      - app
-    labels:
-      org.label-schema.group: 'application'
-
   application_backend:
     container_name: application_backend
     image: application_backend
@@ -75,8 +9,8 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: 'Development'
       ASPNETCORE_URLS: 'http://*:5000;'
-#    ports:
-#      - '5000:5000'
+    #    ports:
+    #      - '5000:5000'
     working_dir: /app
     restart: unless-stopped
     networks:
@@ -90,25 +24,14 @@ services:
   seq_logger:
     container_name: seq_logger
     image: lowartem/seq
-#    ports:
-#      - '5341:80'
+    #    ports:
+    #      - '5341:80'
     restart: unless-stopped
     networks:
       - app
     labels:
       org.label-schema.group: 'application'
-      
-  application_nginx:
-    container_name: application_nginx
-    restart: always
-    ports:
-      - "3002:80"
-    build:
-      context: .
-      dockerfile: Nginx.Dockerfile
-    networks: 
-      - app
 
 networks:
   app:
-    driver: bridge
+    external: true
