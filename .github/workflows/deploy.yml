@@ -36,6 +36,6 @@ jobs:
         playbook: deploy.yml
         directory: DevOps/playbooks
         key: ${{secrets.SSH_PRIVATE_KEY}}
-        inventory: inventory
+        inventory: inventory.ini
         options: |
           --verbose
