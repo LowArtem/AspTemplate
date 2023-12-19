@@ -1,12 +1,18 @@
 version: 3
 
+# Usage of first_deploy:
+# task first_deploy REPO=<REPO> BRANCH=<BRANCH>
+#
+# Usage of deploy:
+# task deploy REPO=<REPO> BRANCH=<BRANCH>
+
 tasks:
   first_deploy:
     dir: DevOps/playbooks
     cmds:
-      - wsl -d Ubuntu-20.04 bash -c 'cd $PWD && ansible-playbook first_deploy.yml -e REPO="{{ REPO }}" -e BRANCH="{{ BRANCH }}"'
+      - wsl -d Ubuntu-20.04 bash -c 'cd $PWD && ansible-playbook first_deploy.yml -e REPO="{{ .REPO }}" -e BRANCH="{{ .BRANCH }}"'
 
   deploy:
     dir: DevOps/playbooks
     cmds:
-      - wsl -d Ubuntu-20.04 bash -c 'cd $PWD && ansible-playbook deploy.yml -e REPO="{{ REPO }}" -e BRANCH="{{ BRANCH }}"'
+      - wsl -d Ubuntu-20.04 bash -c 'cd $PWD && ansible-playbook deploy.yml -e REPO="{{ .REPO }}" -e BRANCH="{{ .BRANCH }}"'
