@@ -36,6 +36,8 @@ jobs:
         playbook: deploy.yml
         directory: DevOps/playbooks
         key: ${{secrets.SSH_PRIVATE_KEY}}
-        inventory: inventory.ini
+        inventory: |
+          [main]
+          5.42.78.156 ansible_ssh_user=root
         options: |
           --verbose
