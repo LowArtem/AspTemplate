@@ -36,9 +36,7 @@ jobs:
         playbook: deploy.yml
         directory: DevOps/playbooks
         key: ${{secrets.SSH_PRIVATE_KEY}}
-        inventory: |
-          [main]
-          5.42.78.156 ansible_ssh_user=root
         options: |
           --verbose
+          --inventory inventory.ini
           --extra-vars "REPO=${{ github.server_url }}/${{ github.repository }} BRANCH=${{ github.ref_name }}"
