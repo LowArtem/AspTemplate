@@ -41,4 +41,4 @@ jobs:
           5.42.78.156 ansible_ssh_user=root
         options: |
           --verbose
-          --extra-vars REPO=${{ github.repository }} BRANCH=${{ github.ref }}
+          --extra-vars "REPO=${{ GITHUB_SERVER_URL }}/${{ GITHUB_REPOSITORY }} BRANCH=${{ GITHUB_REF_NAME }}"
