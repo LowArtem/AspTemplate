@@ -1,17 +1,17 @@
 ---
-- name: "Playbook: [Первоначальный процесс развертывания]"
-  hosts: "{{ HOSTS | default('localhost') }}"
+- name: 'Playbook: [Первоначальный процесс развертывания]'
+  hosts: all
   become: yes
 
   vars:
-    GITUSER:                    # - Username для клонирования приватного репозитория
-    GITPASS:                    # - Пароль для клонирования приватного репозитория
-    REPO:                       # - Ссылка на репозиторий
-    BRANCH: master              # - Ветка для клонирования
-    DEV_OPS_DIR: "/DevOps"      # - Путь до папки с DevOps
+    GITUSER: # - Username для клонирования приватного репозитория
+    GITPASS: # - Пароль для клонирования приватного репозитория
+    REPO: # - Ссылка на репозиторий
+    BRANCH: master # - Ветка для клонирования
+    DEV_OPS_DIR: '/DevOps' # - Путь до папки с DevOps
 
   tasks:
-    - name: "Создание временной папки"
+    - name: 'Создание временной папки'
       tempfile:
         state: directory
         suffix: _git_clone
@@ -20,20 +20,20 @@
     - set_fact: directory="{{ directory.path }}"
 
     - debug:
-        msg: "Проект будет склонирован в директорию: {{ directory }}"
+        msg: 'Проект будет склонирован в директорию: {{ directory }}'
 
-    - name: "Клонирование публичного репозитория"
+    - name: 'Клонирование публичного репозитория'
       git:
         repo: https://{{ REPO }}
-        dest: "{{ directory }}/"
-        version: "{{ BRANCH }}"
+        dest: '{{ directory }}/'
+        version: '{{ BRANCH }}'
       when: GITUSER is not defined and GITPASS is not defined
 
     - name: Клонирование приватного репозитория
       git:
         repo: https://{{ GITUSER | urlencode }}:{{ GITPASS | urlencode }}@{{ REPO }}
-        dest: "{{ directory }}/"
-        version: "{{ BRANCH }}"
+        dest: '{{ directory }}/'
+        version: '{{ BRANCH }}'
       when: GITUSER is defined and GITPASS is defined
 
     - name: Сборка основного приложения
@@ -53,7 +53,7 @@
     - name: Сборка мониторинга приложения
       command: sudo docker-compose -f docker-compose.yml build
       args:
-        chdir: "{{ directory }}/Monitoring"
+        chdir: '{{ directory }}/Monitoring'
       register: result_build_monitoring
       ignore_errors: True
 
@@ -76,17 +76,17 @@
     - name: Запуск мониторинга приложения
       command: sudo docker-compose -f docker-compose.yml up -d
       args:
-        chdir: "{{ directory }}/Monitoring"
+        chdir: '{{ directory }}/Monitoring'
       register: result_up_monitoring
       ignore_errors: True
       when: result_build_monitoring.rc == 0
 
     - name: Удаление временной директории
       file:
-        path: "{{ directory }}"
+        path: '{{ directory }}'
         state: absent
 
     - name: Проверка на успешность развертывания
       debug:
-        msg: "Проект успешно развернут"
+        msg: 'Проект успешно развернут'
       failed_when: (result_up_monitoring.rc != 0) or (result_up_main.rc != 0)
