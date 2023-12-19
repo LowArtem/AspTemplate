@@ -20,7 +20,7 @@ Template has [portainer](https://portainer.io) for simple access to running cont
 There is also configured nginx that proxies all requests to a specific service.
 
 Template has configured github action that runs deployment ansible playbook on every push/pull_request on master (you can change this in `.github/workflows/deploy.yml` file).\
-To make it work you need to add to your github repository a [secret](https://docs.github.com/actions/security-guides/using-secrets-in-github-actions) named SSH_PRIVATE_KEY with public part of your server's ssh-key.
+To make it work you need to add to your github repository a [secret](https://docs.github.com/actions/security-guides/using-secrets-in-github-actions) named `SSH_KEY` with the **private** part of your server's ssh-key.
 
 ## Prerequisites
 
