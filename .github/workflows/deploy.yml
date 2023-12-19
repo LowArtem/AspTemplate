@@ -34,4 +34,4 @@ jobs:
         key: ${{secrets.SSH_PRIVATE_KEY}}
         options: |
           --verbose
-          --inventory DevOps/playbooks/inventory
+          --inventory inventory
