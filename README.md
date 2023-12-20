@@ -37,7 +37,11 @@ git clone https://github.com/LowArtem/AspTemplate
 ```
 
 Clone this repository and change all `AspAdvancedApp` occurrences to the name you want to assign to the project.\
-**Don't forget to change file names, project names, solution name, script settings.**
+You can do this by using `rename_project.py` script (or taskfile command `rename`)
+
+```bash
+task rename
+```
 
 There are also swagger default displaying parameters that you would want to change at `AspAdvancedApp.Api/appsettings.json` under the `Swagger` block.
 

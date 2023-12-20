@@ -5,6 +5,9 @@ version: 3
 #
 # Usage of deploy:
 # task deploy REPO=<REPO> BRANCH=<BRANCH>
+#
+# Usage of rename:
+# task rename
 
 tasks:
   first_deploy:
@@ -16,3 +19,9 @@ tasks:
     dir: DevOps/playbooks
     cmds:
       - wsl -d Ubuntu-20.04 bash -c 'cd $PWD && ansible-playbook deploy.yml -e REPO="{{ .REPO }}" -e BRANCH="{{ .BRANCH }}"'
+
+  rename:
+    dir: .
+    cmds:
+      - python rename_project.py
+      
