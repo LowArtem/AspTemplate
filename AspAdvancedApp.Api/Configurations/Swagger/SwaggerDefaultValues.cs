@@ -1,9 +1,9 @@
 ﻿using System.Text.Json;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
-using Microsoft.AspNetCore.Mvc.ApiExplorer;
 
-namespace AspAdvancedApp.Api.Swagger;
+namespace AspAdvancedApp.Api.Configurations.Swagger;
 
 /// <summary>
 /// Представляет фильтр операции Swagger/Swashbuckle, используемый для документирования неявного параметра версии API.

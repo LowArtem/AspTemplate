@@ -3,7 +3,7 @@ using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace AspAdvancedApp.Api.Swagger;
+namespace AspAdvancedApp.Api.Configurations.Swagger;
 
 /// <summary>
 /// Swashbuckle Schema Filter

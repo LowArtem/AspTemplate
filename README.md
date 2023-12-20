@@ -10,6 +10,7 @@ It has default structure and all important libraries installed and configured. S
 - Swagger (OpenAPI)
 - Entity Framework Core (with PostgreSQL)
 - Dapper
+- Hangfire
 
 There are also configured DevOps scripts for deploying web app to the server with some monitoring services configured:
 
