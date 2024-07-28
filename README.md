@@ -1,7 +1,8 @@
 # Asp.net advanced app template
 
-Template solution for Web API development with asp.net\
-It has default structure and all important libraries installed and configured. Such as:
+This is a template solution for Web API development with ASP.NET.
+
+It has default structure and all important libraries installed and configured, such as:
 
 - Redis
 - Serilog
@@ -37,22 +38,22 @@ To make it work you need to add to your github repository a [secret](https://doc
 git clone https://github.com/LowArtem/AspTemplate
 ```
 
-Clone this repository and change all `AspAdvancedApp` occurrences to the name you want to assign to the project.\
-You can do this by using `rename_project.py` script (or taskfile command `rename`)
+- Clone this repository.
+- Change all `AspAdvancedApp` occurrences to the name you want to assign to the project. You can do this by using `rename_project.py` script (or taskfile command `rename`).
 
 ```bash
 task rename
 ```
 
-There are also swagger default displaying parameters that you would want to change at `AspAdvancedApp.Api/appsettings.json` under the `Swagger` block.
-
-Change PostgreSQL settings (username, password, db name, etc) in `DevOps/docker-compose.yml` and all `appsettings.json` files.
-
-Delete `.git` folder in the root directory and init your own git repository:
+- Change PostgreSQL settings (username, password, db name, etc) in `DevOps/docker-compose.yml` and all `appsettings.json` files.
+- Change server api and username in `DevOps/playbooks/inventory.ini` file.
+- Delete `.git` folder in the root directory and init your own git repository.
 
 ```bash
 git init
 ```
+
+There are also swagger default displaying parameters that you would want to change at `AspAdvancedApp.Api/appsettings.json` under the `Swagger` block.
 
 Enjoy your work!
 
