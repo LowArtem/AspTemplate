@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
-using System.Reflection;
 using System.Text.RegularExpressions;
 using AspAdvancedApp.Api.Configurations.Swagger;
+using AspAdvancedApp.Api.Metrics;
 using AspAdvancedApp.Api.Redis;
 using AspAdvancedApp.Core.Configurations;
 using AspAdvancedApp.Core.Repositories;
@@ -15,6 +15,7 @@ using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
+using Prometheus;
 using Swashbuckle.AspNetCore.Filters;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -51,7 +52,11 @@ public static class ServiceCollectionExtensions
 
         // Other services (Email, UserManager, etc.)
         services.AddServices();
-
+        
+        // Prometheus metrics
+        services.AddPrometheus();
+        
+        // Redis caching
         services.AddRedis(configuration);
     }
 
@@ -210,6 +215,19 @@ public static class ServiceCollectionExtensions
             c.OperationFilter<AppendAuthorizeToSummaryOperationFilter>();
         });
     }
+
+    /// <summary>
+    /// Внедрение метрик Prometheus
+    /// </summary>
+    /// <param name="services"></param>
+    public static void AddPrometheus(this IServiceCollection services)
+    {
+        services.UseHttpClientMetrics();
+        services.AddHealthChecks()
+            .AddCheck<ApplicationHealthCheck>(nameof(ApplicationHealthCheck))
+            .ForwardToPrometheus();
+    }
+        
 
     /// <summary>
     /// Внедрение сервисов

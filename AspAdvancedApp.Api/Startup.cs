@@ -6,6 +6,7 @@ using AutoMapper;
 using Hangfire;
 using Hangfire.PostgreSql;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Prometheus;
 using Serilog;
 
 namespace AspAdvancedApp.Api;
@@ -70,5 +71,12 @@ public class Startup
         });
 
         app.UseSerilogRequestLogging();
+        
+        app.UseHttpMetrics();
+
+        app.UseEndpoints(endpoints =>
+        {
+            endpoints.MapMetrics();
+        });
     }
 }
