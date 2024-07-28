@@ -38,7 +38,7 @@
         - name: Сборка основного приложения
           community.docker.docker_compose_v2:
             project_src: "{{ directory }}{{ DEV_OPS_DIR | default('', true) }}"
-            definition: docker-compose.yml
+            files: [docker-compose.yml]
             state: present
           register: result_build_main
 
@@ -52,7 +52,7 @@
         - name: Запуск основного приложения
           community.docker.docker_compose_v2:
             project_src: "{{ directory }}{{ DEV_OPS_DIR | default('', true) }}"
-            definition: docker-compose.yml
+            files: [docker-compose.yml]
             state: present
           register: result_up_main
           when: result_build_main.rc == 0

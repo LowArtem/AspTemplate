@@ -38,28 +38,28 @@
         - name: Сборка и запуск сервисов для приложения
           community.docker.docker_compose_v2:
             project_src: "{{ directory }}{{ DEV_OPS_DIR | default('', true) }}"
-            definition: docker-compose-services.yml
+            files: [docker-compose-services.yml]
             state: present
           register: result_services
 
         - name: Сборка и запуск основного приложения
           community.docker.docker_compose_v2:
             project_src: "{{ directory }}{{ DEV_OPS_DIR | default('', true) }}"
-            definition: docker-compose.yml
+            files: [docker-compose.yml]
             state: present
           register: result_main
 
         - name: Сборка и запуск портейнера
           community.docker.docker_compose_v2:
             project_src: "{{ directory }}{{ DEV_OPS_DIR | default('', true) }}"
-            definition: docker-compose-portainer.yml
+            files: [docker-compose-portainer.yml]
             state: present
           register: result_portainer
 
         - name: Сборка и запуск мониторинга приложения
           community.docker.docker_compose_v2:
             project_src: '{{ directory }}/Monitoring'
-            definition: docker-compose.yml
+            files: [docker-compose.yml]
             state: present
           register: result_monitoring
 
