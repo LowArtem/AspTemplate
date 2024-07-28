@@ -36,28 +36,28 @@
 
     - block:
         - name: Сборка и запуск сервисов для приложения
-          ansible.builtin.docker_compose:
+          community.docker.docker_compose_v2:
             project_src: "{{ directory }}{{ DEV_OPS_DIR | default('', true) }}"
             definition: docker-compose-services.yml
             state: present
           register: result_services
 
         - name: Сборка и запуск основного приложения
-          ansible.builtin.docker_compose:
+          community.docker.docker_compose_v2:
             project_src: "{{ directory }}{{ DEV_OPS_DIR | default('', true) }}"
             definition: docker-compose.yml
             state: present
           register: result_main
 
         - name: Сборка и запуск портейнера
-          ansible.builtin.docker_compose:
+          community.docker.docker_compose_v2:
             project_src: "{{ directory }}{{ DEV_OPS_DIR | default('', true) }}"
             definition: docker-compose-portainer.yml
             state: present
           register: result_portainer
 
         - name: Сборка и запуск мониторинга приложения
-          ansible.builtin.docker_compose:
+          community.docker.docker_compose_v2:
             project_src: '{{ directory }}/Monitoring'
             definition: docker-compose.yml
             state: present

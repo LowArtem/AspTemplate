@@ -36,7 +36,7 @@
 
     - block:
         - name: Сборка основного приложения
-          ansible.builtin.docker_compose:
+          community.docker.docker_compose_v2:
             project_src: "{{ directory }}{{ DEV_OPS_DIR | default('', true) }}"
             definition: docker-compose.yml
             state: present
@@ -50,7 +50,7 @@
           when: ENV_FILE is not defined or ENV_FILE == ""
 
         - name: Запуск основного приложения
-          ansible.builtin.docker_compose:
+          community.docker.docker_compose_v2:
             project_src: "{{ directory }}{{ DEV_OPS_DIR | default('', true) }}"
             definition: docker-compose.yml
             state: present
