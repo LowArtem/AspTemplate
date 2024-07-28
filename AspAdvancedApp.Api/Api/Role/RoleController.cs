@@ -18,8 +18,9 @@ namespace AspAdvancedApp.Api.Api.Role;
 [Authorize]
 public class RoleController : BaseCrudController<Core.Model.Auth.Role, RoleRequestDto, RoleResponseDto>
 {
+    /// <inheritdoc />
     public RoleController(IEfCoreRepository<Core.Model.Auth.Role> repository,
-        ILogger<BaseCrudController<Core.Model.Auth.Role, RoleRequestDto, RoleResponseDto>> logger, IMapper mapper) :
+        ILogger<RoleController> logger, IMapper mapper) :
         base(repository, logger, mapper)
     {
     }

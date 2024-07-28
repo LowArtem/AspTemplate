@@ -30,7 +30,7 @@ public class UserController : BaseCrudController<Core.Model.Auth.User, UserReque
 
     /// <inheritdoc />
     public UserController(IEfCoreRepository<Core.Model.Auth.User> repository,
-        ILogger<BaseCrudController<Core.Model.Auth.User, UserRequestDto, UserResponseDto>> logger, IMapper mapper,
+        ILogger<UserController> logger, IMapper mapper,
         UserService service) :
         base(repository, logger, mapper)
     {
