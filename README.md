@@ -39,19 +39,21 @@ git clone https://github.com/LowArtem/AspTemplate
 ```
 
 - Clone this repository.
+- Delete `.git` folder in the root directory and init your own git repository.
+
+```bash
+git init
+```
+
 - Change all `AspAdvancedApp` occurrences to the name you want to assign to the project. You can do this by using `rename_project.py` script (or taskfile command `rename`).
 
 ```bash
 task rename
 ```
 
-- Change PostgreSQL settings (username, password, db name, etc) in `DevOps/docker-compose.yml` and all `appsettings.json` files.
+- Change PostgreSQL settings (username, password, db name, etc) in `DevOps/docker-compose-services.yml` and all `appsettings.json` files.
 - Change server api and username in `DevOps/playbooks/inventory.ini` file.
-- Delete `.git` folder in the root directory and init your own git repository.
-
-```bash
-git init
-```
+— Change JWT settings in the `AspAdvancedApp.Core/Configurations/AuthOptions.cs` file. (It's better to move the secret key out of the codebase into environment variables, for example).
 
 There are also swagger default displaying parameters that you would want to change at `AspAdvancedApp.Api/appsettings.json` under the `Swagger` block.
 
