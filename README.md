@@ -53,7 +53,7 @@ task rename
 
 - Change PostgreSQL settings (username, password, db name, etc) in `DevOps/docker-compose-services.yml` and all `appsettings.json` files.
 - Change server api and username in `DevOps/playbooks/inventory.ini` file.
-— Change JWT settings in the `AspAdvancedApp.Core/Configurations/AuthOptions.cs` file. (It's better to move the secret key out of the codebase into environment variables, for example).
+— Change JWT settings in the `AspAdvancedApp.Api/appsettings.json` file. (It's better to move the secret key out of the codebase into environment variables, for example).
 
 There are also swagger default displaying parameters that you would want to change at `AspAdvancedApp.Api/appsettings.json` under the `Swagger` block.
 
