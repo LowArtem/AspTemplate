@@ -17,13 +17,15 @@ public class UserService
 {
     private readonly IEfCoreRepository<User> _userRepository;
     private readonly IEfCoreRepository<Role> _roleRepository;
+    private readonly IJwtService _jwtService;
     private readonly IMapper _mapper;
 
-    public UserService(IEfCoreRepository<User> userRepository, IEfCoreRepository<Role> roleRepository, IMapper mapper)
+    public UserService(IEfCoreRepository<User> userRepository, IEfCoreRepository<Role> roleRepository, IMapper mapper, IJwtService jwtService)
     {
         _userRepository = userRepository;
         _roleRepository = roleRepository;
         _mapper = mapper;
+        _jwtService = jwtService;
     }
 
     /// <summary>
@@ -208,12 +210,12 @@ public class UserService
         var now = DateTime.UtcNow;
 
         var jwt = new JwtSecurityToken(
-            issuer: AuthOptions.ISSUER,
-            audience: AuthOptions.AUDIENCE,
+            issuer: _jwtService.Issuer,
+            audience: _jwtService.Audience,
             notBefore: now,
             claims: identity.Claims,
-            expires: now.Add(TimeSpan.FromMinutes(AuthOptions.LIFETIME)),
-            signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(),
+            expires: now.Add(TimeSpan.FromMinutes(_jwtService.Lifetime)),
+            signingCredentials: new SigningCredentials(_jwtService.GetSymmetricSecurityKey(),
                 SecurityAlgorithms.HmacSha256));
 
         return new JwtSecurityTokenHandler().WriteToken(jwt);

@@ -3,7 +3,9 @@ using System.Text.RegularExpressions;
 using AspAdvancedApp.Api.Configurations.Swagger;
 using AspAdvancedApp.Api.Metrics;
 using AspAdvancedApp.Api.Redis;
+using AspAdvancedApp.Api.Services.Auth;
 using AspAdvancedApp.Core.Configurations;
+using AspAdvancedApp.Core.Model.Auth;
 using AspAdvancedApp.Core.Repositories;
 using AspAdvancedApp.Data;
 using AspAdvancedApp.Data.Repositories;
@@ -37,6 +39,9 @@ public static class ServiceCollectionExtensions
     {
         // DB
         services.AddContext(configuration.GetConnectionString(sectionConnectionString));
+        
+        // JWT
+        services.AddSingleton(typeof(IJwtService), typeof(JwtService));
 
         // CORS
         services.AddCors();
@@ -76,6 +81,9 @@ public static class ServiceCollectionExtensions
 
     private static void AddAppAuthentication(this IServiceCollection services)
     {
+        var serviceProvider = services.BuildServiceProvider();
+        var jwtService = serviceProvider.GetRequiredService<IJwtService>();
+        
         services.AddAuthentication("Bearer")
             .AddJwtBearer(options =>
             {
@@ -84,13 +92,13 @@ public static class ServiceCollectionExtensions
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuer = true,
-                    ValidIssuer = AuthOptions.ISSUER,
+                    ValidIssuer = jwtService.Issuer,
 
                     ValidateAudience = true,
-                    ValidAudience = AuthOptions.AUDIENCE,
+                    ValidAudience = jwtService.Audience,
                     ValidateLifetime = true,
 
-                    IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
+                    IssuerSigningKey = jwtService.GetSymmetricSecurityKey(),
                     ValidateIssuerSigningKey = true,
                     RoleClaimType = "Role"
                 };
