@@ -6,13 +6,13 @@ services:
     image: application_backend
     build:
       context: ../
-      dockerfile: AspAdvancedApp.Api/Dockerfile
-    command: dotnet AspAdvancedApp.Api.dll
+      dockerfile: FinanceManagerBackend.Api/Dockerfile
+    command: dotnet FinanceManagerBackend.Api.dll
     environment:
-      ASPNETCORE_ENVIRONMENT: 'Development'
+      ASPNETCORE_ENVIRONMENT: 'Production'
       ASPNETCORE_URLS: 'http://*:5000;'
-    #    ports:
-    #      - '5000:5000'
+    ports:
+      - '3000:5000'
     working_dir: /app
     restart: unless-stopped
     networks:
@@ -23,13 +23,24 @@ services:
   seq_logger:
     container_name: seq_logger
     image: lowartem/seq
-    #    ports:
-    #      - '5341:80'
+    ports:
+      - '5341:80'
     restart: unless-stopped
     networks:
       - app
     labels:
       org.label-schema.group: 'application'
+
+#  application_nginx:
+#    container_name: application_nginx
+#    restart: always
+#    ports:
+#      - '3002:80'
+#    build:
+#      context: .
+#      dockerfile: Nginx.Dockerfile
+#    networks:
+#      - app
 
 networks:
   app:

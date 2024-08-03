@@ -3,15 +3,22 @@ services:
   portainer:
     container_name: portainer
     image: 'docker.io/portainer/portainer-ce'
-#    ports:
-#      - '9000:9000'
+    ports:
+      - '3535:9000'
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - portainer-data:/data
     restart: unless-stopped
     labels:
       org.label-schema.group: 'portainer'
+    networks:
+      - app
 
 volumes:
   portainer-data:
     driver: local
+
+networks:
+  app:
+    name: app
+    external: true
