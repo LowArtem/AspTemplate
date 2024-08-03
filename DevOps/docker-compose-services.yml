@@ -79,4 +79,5 @@ services:
 
 networks:
   app:
+    name: app
     driver: bridge

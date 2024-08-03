@@ -2,9 +2,11 @@ version: '3.9'
 services:
   application_backend:
     container_name: application_backend
+    hostname: application_backend
     image: application_backend
     build:
-      dockerfile: ../AspAdvancedApp.Api/Dockerfile
+      context: ../
+      dockerfile: AspAdvancedApp.Api/Dockerfile
     command: dotnet AspAdvancedApp.Api.dll
     environment:
       ASPNETCORE_ENVIRONMENT: 'Development'
@@ -15,9 +17,6 @@ services:
     restart: unless-stopped
     networks:
       - app
-    depends_on:
-      - postgres
-      - redis
     labels:
       org.label-schema.group: 'application'
 
@@ -34,4 +33,5 @@ services:
 
 networks:
   app:
+    name: app
     external: true

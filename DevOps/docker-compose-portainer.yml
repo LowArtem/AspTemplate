@@ -11,3 +11,7 @@ services:
     restart: unless-stopped
     labels:
       org.label-schema.group: 'portainer'
+
+volumes:
+  portainer-data:
+    driver: local

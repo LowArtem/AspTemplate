@@ -2,6 +2,7 @@ version: '3.9'
 
 networks:
   app:
+    name: app
     external: true
 
 volumes:

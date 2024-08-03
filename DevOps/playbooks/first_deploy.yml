@@ -38,47 +38,48 @@
         - name: Сборка и запуск сервисов для приложения
           community.docker.docker_compose_v2:
             project_src: "{{ directory }}{{ DEV_OPS_DIR | default('', true) }}"
-            files: [docker-compose-services.yml]
+            files: [ docker-compose-services.yml ]
             state: present
           register: result_services
 
         - name: Сборка и запуск основного приложения
           community.docker.docker_compose_v2:
             project_src: "{{ directory }}{{ DEV_OPS_DIR | default('', true) }}"
-            files: [docker-compose.yml]
+            files: [ docker-compose.yml ]
             state: present
           register: result_main
 
         - name: Сборка и запуск портейнера
           community.docker.docker_compose_v2:
             project_src: "{{ directory }}{{ DEV_OPS_DIR | default('', true) }}"
-            files: [docker-compose-portainer.yml]
+            files: [ docker-compose-portainer.yml ]
             state: present
           register: result_portainer
 
         - name: Сборка и запуск мониторинга приложения
           community.docker.docker_compose_v2:
             project_src: '{{ directory }}/Monitoring'
-            files: [docker-compose.yml]
+            files: [ docker-compose.yml ]
             state: present
           register: result_monitoring
-
+      
       rescue:
         - name: Логирование ошибки
-          debug:
-            msg: "Ошибка на этапе развертывания. Результаты: \
-                  Сервисы - {{ result_services.rc }}, \
-                  Основное приложение - {{ result_main.rc }}, \
-                  Портейнер - {{ result_portainer.rc }}, \
-                  Мониторинг - {{ result_monitoring.rc }}"
+          fail:
+            msg: >-
+              Ошибка на этапе развертывания. Результаты:
+              Сервисы - {{ result_services | default('Не выполнено') }},
+              Основное приложение - {{ result_main | default('Не выполнено') }},
+              Портейнер - {{ result_portainer | default('Не выполнено') }},
+              Мониторинг - {{ result_monitoring | default('Не выполнено') }}
 
     - name: Удаление временной директории
       file:
         path: '{{ directory }}'
         state: absent
-      when: result_services.rc == 0 and result_main.rc == 0 and result_portainer.rc == 0 and result_monitoring.rc == 0
+      when: result_services.changed and result_main.changed and result_portainer.changed and result_monitoring.changed
 
     - name: Проверка на успешность развертывания
       debug:
         msg: 'Проект успешно развернут'
-      failed_when: result_services.rc != 0 or result_main.rc != 0 or result_portainer.rc != 0 or result_monitoring.rc != 0
+      failed_when: not result_services.changed or not result_main.changed or not result_portainer.changed or not result_monitoring.changed 
