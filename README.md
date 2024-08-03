@@ -19,7 +19,7 @@ There are also configured DevOps scripts for deploying web app to the server wit
 - Prometheus
 
 Template has [portainer](https://portainer.io) for simple access to running containers.\
-There is also configured nginx that proxies all requests to a specific service.
+There is also configured nginx that proxies all requests to a specific service (for solutions with multiple webapi projects).
 
 Template has configured github action that runs deployment ansible playbook on every push/pull_request on master (you can change this in `.github/workflows/deploy.yml` file).\
 To make it work you need to add to your github repository a [secret](https://docs.github.com/actions/security-guides/using-secrets-in-github-actions) named `SSH_KEY` with the **private** part of your server's ssh-key.
@@ -53,7 +53,7 @@ task rename
 
 - Change PostgreSQL settings (username, password, db name, etc) in `DevOps/docker-compose-services.yml` and all `appsettings.json` files.
 - Change server api and username in `DevOps/playbooks/inventory.ini` file.
-— Change JWT settings in the `AspAdvancedApp.Api/appsettings.json` file. (It's better to move the secret key out of the codebase into environment variables, for example).
+- Change JWT settings in the `AspAdvancedApp.Api/appsettings.json` file. (It's better to move the secret key out of the codebase into environment variables, for example).
 
 There are also swagger default displaying parameters that you would want to change at `AspAdvancedApp.Api/appsettings.json` under the `Swagger` block.
 
