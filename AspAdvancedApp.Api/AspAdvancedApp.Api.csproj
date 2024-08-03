@@ -58,6 +58,8 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Api\ExternalApi\v1\" />
+      <Folder Include="Api\InternalApi\v1\" />
       <Folder Include="Validators\" />
     </ItemGroup>
 

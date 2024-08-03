@@ -93,7 +93,9 @@ public static class ApplicationBuilderExtensions
         var isDevelopment = app.ApplicationServices.GetService<IWebHostEnvironment>()!.IsDevelopment();
 
         var assemblyName = Assembly.GetEntryAssembly()!.GetName().GetNameDashCase();
-        var prefixApi = isDevelopment ? "" : $"/api/{assemblyName}";
+        
+        // var prefixApi = isDevelopment ? "" : $"/api/{assemblyName}";
+        const string prefixApi = ""; // вместо верхней строчки, пока хардкод (для нескольких проектов нужно будет менять)
 
         app.UseSwagger();
 
