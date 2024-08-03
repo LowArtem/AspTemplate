@@ -20,8 +20,8 @@ services:
     labels:
       org.label-schema.group: 'application'
 
-  seq_logger:
-    container_name: seq_logger
+  seq:
+    container_name: seq
     image: lowartem/seq
     ports:
       - '5341:80'
