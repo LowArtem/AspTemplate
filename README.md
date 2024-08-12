@@ -1,5 +1,7 @@
 # Asp.net advanced app template
 
+## TODO: Deploy scripts and github actions are not working.
+
 This is a template solution for Web API development with ASP.NET.
 
 It has default structure and all important libraries installed and configured, such as:
