@@ -4,17 +4,9 @@
   become: yes
 
   vars:
-    GITUSER: # - Username для клонирования приватного репозитория
-    GITPASS: # - Пароль для клонирования приватного репозитория
     REPO: # - Ссылка на репозиторий
     BRANCH: master # - Ветка для клонирования
     DEV_OPS_DIR: '/DevOps' # - Путь до папки с DevOps
-
-  pre_tasks:
-    - name: Проверка обязательных переменных
-      fail:
-        msg: "Переменные GITUSER, GITPASS и REPO должны быть заданы"
-      when: GITUSER is not defined or GITPASS is not defined or REPO is not defined
 
   tasks:
     - name: 'Создание временной папки'
@@ -30,7 +22,7 @@
 
     - name: 'Клонирование репозитория'
       git:
-        repo: "https://{{ GITUSER | urlencode }}:{{ GITPASS | urlencode }}@{{ REPO }}"
+        repo: "{{ REPO }}"
         dest: '{{ directory }}/'
         version: '{{ BRANCH }}'
 
@@ -38,7 +30,7 @@
         - name: Сборка основного приложения
           community.docker.docker_compose_v2:
             project_src: "{{ directory }}{{ DEV_OPS_DIR | default('', true) }}"
-            files: [docker-compose.yml]
+            files: [ docker-compose.yml ]
             state: present
           register: result_build_main
 
@@ -52,25 +44,26 @@
         - name: Запуск основного приложения
           community.docker.docker_compose_v2:
             project_src: "{{ directory }}{{ DEV_OPS_DIR | default('', true) }}"
-            files: [docker-compose.yml]
+            files: [ docker-compose.yml ]
             state: present
           register: result_up_main
-          when: result_build_main.rc == 0
+          when: result_build_main.changed
 
       rescue:
         - name: Логирование ошибки
-          debug:
-            msg: "Ошибка на этапе развертывания. Результаты: \
-                  Сборка - {{ result_build_main.rc }}, \
-                  Запуск - {{ result_up_main.rc }}"
+          fail:
+            msg: >-
+              Ошибка на этапе развертывания. Результаты:
+              Сборка - {{ result_build_main | default('Не выполнено') }},
+              Запуск - {{ result_up_main | default('Не выполнено') }}
 
     - name: Удаление временной директории
       file:
         path: '{{ directory }}'
         state: absent
-      when: result_build_main.rc == 0 and result_up_main.rc == 0
+      when: result_build_main.changed and result_up_main.changed
 
     - name: Проверка на успешность развертывания
       debug:
         msg: 'Проект успешно развернут'
-      failed_when: result_up_main.rc != 0
+      failed_when: not result_build_main.changed or not result_up_main.changed
